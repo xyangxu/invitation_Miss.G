@@ -58,9 +58,10 @@
       background-color: #95a5a6;
       color: white;
       position: absolute;  /* 绝对定位，跑动用 */
-      top: 0;
+      top: 0;   /* 这里初始先占位，后面JS设置位置 */
       left: 0;
       z-index: 3;
+      transition: left 0.2s ease, top 0.2s ease; /* 平滑移动 */
     }
     audio {
       display: none;
@@ -77,8 +78,8 @@
     <p>在这里小徐同学正式向小高老师发出邀请：</p>
     <p><strong>本周六中午11:30，咱们一起去吃火锅好不好呀？</strong></p>
     <p style="color: #555; font-size: 16px;">地点：黔勐牛贵州酸汤牛肉火锅（江汉路店）<br/>我请客，您点锅 😄</p>
-    <button class="yes" onclick="yes()">当然好呀！</button>
-    <button class="no" id="noBtn" onmouseover="runAway()">不去</button>
+    <button class="yes" id="yesBtn" onclick="yes()">当然好呀！</button>
+    <button class="no" id="noBtn">不去</button>
     <p style="font-size: 14px; color: #888;">（点一下页面即可播放背景音乐 🎵）</p>
   </div>
 
@@ -89,29 +90,56 @@
   </audio>
 
   <script>
+    const btnNo = document.getElementById('noBtn');
+    const btnYes = document.getElementById('yesBtn');
+    const card = document.getElementById('card');
+
+    // 初始化“不去”按钮位置：在“当然好呀”按钮正下方，距离10px
+    function initNoBtnPos() {
+      const yesRect = btnYes.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+
+      // 计算相对于 card 的位置
+      const left = yesRect.left - cardRect.left;
+      const top = yesRect.bottom - cardRect.top + 10; // 下方10px间距
+
+      btnNo.style.left = left + 'px';
+      btnNo.style.top = top + 'px';
+    }
+
+    // 按钮跑起来的函数
+    function runAway() {
+      const maxX = card.clientWidth - btnNo.offsetWidth - 10;
+      const maxY = card.clientHeight - btnNo.offsetHeight - 10;
+
+      let newX, newY;
+
+      // 保证新位置和当前不一样，否则可能“不动”
+      do {
+        newX = Math.random() * maxX;
+        newY = Math.random() * maxY;
+      } while (
+        Math.abs(newX - parseFloat(btnNo.style.left)) < 20 &&
+        Math.abs(newY - parseFloat(btnNo.style.top)) < 20
+      );
+
+      btnNo.style.left = newX + 'px';
+      btnNo.style.top = newY + 'px';
+    }
+
     function yes() {
       alert("太棒了！我已经开始期待这顿火锅啦~ 🔥");
     }
 
-    function runAway() {
-      const btn = document.getElementById("noBtn");
-      const card = document.getElementById("card");
+    // 鼠标移入就跑
+    btnNo.addEventListener('mouseover', runAway);
+    // 点击按钮也跑
+    btnNo.addEventListener('click', runAway);
 
-      const cardRect = card.getBoundingClientRect();
-      const btnRect = btn.getBoundingClientRect();
-
-      // 计算按钮在card内部可移动的最大坐标（考虑padding和按钮大小）
-      const maxX = card.clientWidth - btn.offsetWidth - 10; // 留10px边距防止贴边
-      const maxY = card.clientHeight - btn.offsetHeight - 10;
-
-      // 随机生成新位置
-      const newX = Math.random() * maxX;
-      const newY = Math.random() * maxY;
-
-      // 设置按钮的新位置，相对于card容器
-      btn.style.left = newX + 'px';
-      btn.style.top = newY + 'px';
-    }
+    // 初始化位置
+    window.addEventListener('load', initNoBtnPos);
+    // 兼容窗口resize，重置“不去”按钮位置
+    window.addEventListener('resize', initNoBtnPos);
 
     // 自动播放（微信 & 网页点击兼容）
     document.addEventListener("DOMContentLoaded", function () {
