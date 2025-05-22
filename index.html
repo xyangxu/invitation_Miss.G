@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>来自小徐同学的邀请</title>
+  <style>
+    body {
+      background: #f0f4f8;
+      font-family: "Segoe UI", sans-serif;
+      text-align: center;
+      padding: 30px 20px;
+      color: #333;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      display: inline-block;
+      max-width: 90vw;
+      width: 400px;
+      animation: fadeIn 1s ease;
+      box-sizing: border-box;
+    }
+    h1 {
+      color: #e67e22;
+      font-size: 1.6em;
+    }
+    p {
+      font-size: 16px;
+      margin: 16px 0;
+      line-height: 1.5;
+    }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+      width: 100px;
+    }
+    .yes {
+      background-color: #e74c3c;
+      color: white;
+    }
+    .no {
+      background-color: #95a5a6;
+      color: white;
+      position: relative;
+    }
+    audio {
+      display: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>尊敬的小高老师 🎈</h1>
+    <p>在这里小徐同学正式向小高老师发出邀请：</p>
+    <p><strong>本周六中午11:30，咱们一起去吃火锅好不好呀？</strong></p>
+    <p style="color: #555; font-size: 16px;">地点：黔勐牛贵州酸汤牛肉火锅（江汉路店）<br/>我请客，您点锅 😄</p>
+    <button class="yes" onclick="yes()">当然好呀！</button>
+    <button class="no" id="noBtn" onmouseover="runAway()">不去</button>
+  </div>
+
+  <!-- 告白气球背景音乐 -->
+  <audio id="bgm" autoplay loop>
+    <source src="https://music.163.com/song/media/outer/url?id=436514312.mp3" type="audio/mpeg">
+    您的浏览器不支持音频播放。
+  </audio>
+
+  <script>
+    function yes() {
+      alert("太棒了！我已经开始期待这顿火锅啦~ 🔥");
+    }
+
+    function runAway() {
+      const btn = document.getElementById("noBtn");
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 100);
+      btn.style.position = "absolute";
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+    }
+
+    // 微信内浏览器环境下自动播放
+    document.addEventListener("WeixinJSBridgeReady", function () {
+      const audio = document.getElementById("bgm");
+      audio.play();
+    }, false);
+  </script>
+</body>
+</html>
