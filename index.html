@@ -7,55 +7,71 @@
   <style>
     body {
       background: #f0f4f8;
-      font-family: "Segoe UI", sans-serif;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       text-align: center;
       padding: 30px 20px;
       color: #333;
       margin: 0;
     }
+
     .card {
       background: white;
       border-radius: 20px;
       padding: 24px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       display: inline-block;
-      max-width: 90vw;
-      width: 400px;
+      width: 100%;
+      max-width: 400px;
       animation: fadeIn 1s ease;
       box-sizing: border-box;
     }
+
     h1 {
       color: #e67e22;
       font-size: 1.6em;
     }
+
     p {
       font-size: 16px;
       margin: 16px 0;
       line-height: 1.5;
     }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
     button {
       font-size: 16px;
       padding: 10px 20px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      margin: 10px;
       transition: all 0.3s ease;
       min-width: 140px;
       white-space: nowrap;
     }
+
     .yes {
       background-color: #e74c3c;
       color: white;
     }
+
     .no {
       background-color: #95a5a6;
       color: white;
-      position: relative;
+      position: fixed;
+      z-index: 9999;
     }
+
     audio {
       display: none;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px);}
       to { opacity: 1; transform: translateY(0);}
@@ -68,12 +84,18 @@
     <p>在这里小徐同学正式向小高老师发出邀请：</p>
     <p><strong>本周六中午11:30，咱们一起去吃火锅好不好呀？</strong></p>
     <p style="color: #555; font-size: 16px;">地点：黔勐牛贵州酸汤牛肉火锅（江汉路店）<br/>我请客，您点锅 😄</p>
-    <button class="yes" onclick="yes()">当然好呀！</button>
-    <button class="no" id="noBtn" onmouseover="runAway()">不去</button>
-    <p style="font-size: 14px; color: #888;">（点一下页面即可播放背景音乐 🎵）</p>
+
+    <!-- 播放音乐提示 -->
+    <p style="font-size: 14px; color: #888; margin-bottom: 8px;">（点一下页面即可播放背景音乐 🎵）</p>
+
+    <!-- 按钮上下排列 -->
+    <div class="button-group">
+      <button class="yes" onclick="yes()">当然好呀！</button>
+      <button class="no" id="noBtn" onmouseover="runAway()">不去</button>
+    </div>
   </div>
 
-  <!-- 背景音乐：Cute by Bensound -->
+  <!-- 背景音乐 -->
   <audio id="bgm" loop>
     <source src="https://www.bensound.com/bensound-music/bensound-cute.mp3" type="audio/mpeg">
     您的浏览器不支持音频播放。
@@ -84,35 +106,33 @@
       alert("太棒了！我已经开始期待这顿火锅啦~ 🔥");
     }
 
-  function runAway() {
-    const btn = document.getElementById("noBtn");
-    const btnWidth = btn.offsetWidth;
-    const btnHeight = btn.offsetHeight;
-    const maxX = window.innerWidth - btnWidth - 10;  // 右侧安全边距10px
-    const maxY = window.innerHeight - btnHeight - 10; // 底部安全边距10px
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-    btn.style.position = "absolute";
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
-  }
+    function runAway() {
+      const btn = document.getElementById("noBtn");
+      const btnWidth = btn.offsetWidth;
+      const btnHeight = btn.offsetHeight;
+      const maxX = document.documentElement.clientWidth - btnWidth - 10;
+      const maxY = document.documentElement.clientHeight - btnHeight - 10;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+    }
 
-
-    // 自动播放（微信 & 网页点击兼容）
+    // 自动播放背景音乐（用户点击后）
     document.addEventListener("DOMContentLoaded", function () {
       const audio = document.getElementById('bgm');
-      function playMusicOnce() {
+      function play() {
         audio.play().catch(() => {
-          console.log("用户未允许播放");
+          console.log("等待用户交互");
         });
-        document.body.removeEventListener('click', playMusicOnce);
+        document.removeEventListener('click', play);
       }
-      document.body.addEventListener('click', playMusicOnce);
+      document.addEventListener('click', play);
     });
 
+    // 微信浏览器支持
     document.addEventListener("WeixinJSBridgeReady", function () {
-      const audio = document.getElementById("bgm");
-      audio.play();
+      document.getElementById("bgm").play();
     }, false);
   </script>
 </body>
