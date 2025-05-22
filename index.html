@@ -84,14 +84,19 @@
       alert("太棒了！我已经开始期待这顿火锅啦~ 🔥");
     }
 
-    function runAway() {
-      const btn = document.getElementById("noBtn");
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 100);
-      btn.style.position = "absolute";
-      btn.style.left = x + "px";
-      btn.style.top = y + "px";
-    }
+  function runAway() {
+    const btn = document.getElementById("noBtn");
+    const btnWidth = btn.offsetWidth;
+    const btnHeight = btn.offsetHeight;
+    const maxX = window.innerWidth - btnWidth - 10;  // 右侧安全边距10px
+    const maxY = window.innerHeight - btnHeight - 10; // 底部安全边距10px
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+  }
+
 
     // 自动播放（微信 & 网页点击兼容）
     document.addEventListener("DOMContentLoaded", function () {
