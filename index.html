@@ -86,16 +86,27 @@
 
   function runAway() {
     const btn = document.getElementById("noBtn");
+    const card = btn.parentElement; // 获取父容器 .card
+    
+    const cardRect = card.getBoundingClientRect();
     const btnWidth = btn.offsetWidth;
     const btnHeight = btn.offsetHeight;
-    const maxX = window.innerWidth - btnWidth - 10;  // 右侧安全边距10px
-    const maxY = window.innerHeight - btnHeight - 10; // 底部安全边距10px
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-    btn.style.position = "absolute";
+    
+    // 计算按钮可移动的最大X和Y坐标（相对视口）
+    const maxX = cardRect.left + cardRect.width - btnWidth - 10; // 右侧留10px间距
+    const maxY = cardRect.top + cardRect.height - btnHeight - 10; // 底部留10px间距
+    const minX = cardRect.left + 10;  // 左侧留10px间距
+    const minY = cardRect.top + 10;   // 顶部留10px间距
+    
+    // 在卡片范围内随机位置
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = Math.random() * (maxY - minY) + minY;
+    
+    btn.style.position = "fixed"; // 用 fixed 定位，相对于视口，跟 getBoundingClientRect 一致
     btn.style.left = x + "px";
     btn.style.top = y + "px";
   }
+
 
 
     // 自动播放（微信 & 网页点击兼容）
