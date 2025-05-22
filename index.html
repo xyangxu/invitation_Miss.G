@@ -66,16 +66,16 @@
   <div class="card">
     <h1>尊敬的小高老师 🎈</h1>
     <p>在这里小徐同学正式向小高老师发出邀请：</p>
-    <p><strong>本周六中午11:30点，咱们一起去吃火锅好不好呀？</strong></p>
+    <p><strong>本周六中午11:30，咱们一起去吃火锅好不好呀？</strong></p>
     <p style="color: #555; font-size: 16px;">地点：黔勐牛贵州酸汤牛肉火锅（江汉路店）<br/>我请客，您点锅 😄</p>
     <button class="yes" onclick="yes()">当然好呀！</button>
     <button class="no" id="noBtn" onmouseover="runAway()">不去</button>
-    <p style="font-size: 14px; color: #888;">（点一下页面即可播放《告白气球》🎵）</p>
+    <p style="font-size: 14px; color: #888;">（点一下页面即可播放背景音乐 🎵）</p>
   </div>
 
-  <!-- 新的稳定音乐链接 -->
+  <!-- 背景音乐：Cute by Bensound -->
   <audio id="bgm" loop>
-    <source src="https://cdn.jsdelivr.net/gh/xiadd/music-hosting/告白气球.mp3" type="audio/mpeg">
+    <source src="https://www.bensound.com/bensound-music/bensound-cute.mp3" type="audio/mpeg">
     您的浏览器不支持音频播放。
   </audio>
 
@@ -93,7 +93,7 @@
       btn.style.top = y + "px";
     }
 
-    // 自动播放音乐（微信兼容）
+    // 自动播放（微信 & 网页点击兼容）
     document.addEventListener("DOMContentLoaded", function () {
       const audio = document.getElementById('bgm');
       function playMusicOnce() {
